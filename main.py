@@ -5,7 +5,7 @@ import os
 from moviepy.editor import *
 
 
-token = input('PUT UR BOT TOKEN')
+token = input('PUT UR BOT TOKEN: ')
 bot = telebot.TeleBot(token)
 
 
