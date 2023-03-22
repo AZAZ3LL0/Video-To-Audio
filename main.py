@@ -21,7 +21,7 @@ def echo_all(message):
     vidos = "".join(char for char in yt.title if char.isalnum())
     print(vidos)
 
-    yt.streams.filter(file_extension='mp4')[0].download()
+    yt.streams.filter(file_extension='mp4')[0].download(filename=vidos+".mp4")
     video = VideoFileClip(vidos + ".mp4")
     video.audio.write_audiofile(vidos + ".mp3")
 
@@ -38,9 +38,9 @@ def echo_all(message):
 @bot.message_handler(commands=['download'])
 def sent_group_audio(message):
     yt = YouTube(message.text.split(' ')[-1])
-    vidos = yt.title.replace('.', '')
+    vidos = "".join(char for char in yt.title if char.isalnum())
     print(vidos)
-    yt.streams.filter(file_extension='mp4')[0].download()
+    yt.streams.filter(file_extension='mp4')[0].download(filename=vidos+".mp4")
     video = VideoFileClip(vidos + ".mp4")
     video.audio.write_audiofile(vidos + ".mp3")
 
