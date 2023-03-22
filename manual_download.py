@@ -15,7 +15,7 @@ print(titles.intro2)
 
 def main():
     if args.path is not None:
-        path = args.path
+        path = args.path + "/"
     else:
         path = ""
     while True:
@@ -24,15 +24,14 @@ def main():
             break
 
         yt = YouTube(request)
-
-        print(yt.title)
-
-        yt.streams.filter(file_extension='mp4')[0].download()
-        video = VideoFileClip(yt.title + ".mp4")
-        video.audio.write_audiofile(path + "/" + yt.title + ".mp3")
+        normal_name = "".join(char for char in yt.title if char.isalnum())
+        print(normal_name)
+        yt.streams.filter(file_extension='mp4')[0].download(filename=normal_name+".mp4")
+        video = VideoFileClip(normal_name + ".mp4")
+        video.audio.write_audiofile(path + normal_name + ".mp3")
 
         video.close()
-        os.remove(yt.title + ".mp4")
+        os.remove(normal_name + ".mp4")
 
         if args.stream is None:
             break
