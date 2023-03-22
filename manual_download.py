@@ -14,7 +14,10 @@ print(titles.intro2)
 
 
 def main():
-    path = args.path
+    if args.path is not None:
+        path = args.path
+    else:
+        path = ""
     while True:
         request = input("YT link:\t")
         if request == "exit" or request == KeyboardInterrupt:
@@ -26,7 +29,7 @@ def main():
 
         yt.streams.filter(file_extension='mp4')[0].download()
         video = VideoFileClip(yt.title + ".mp4")
-        video.audio.write_audiofile(yt.title + ".mp3")
+        video.audio.write_audiofile(path + "/" + yt.title + ".mp3")
 
         video.close()
         os.remove(yt.title + ".mp4")
