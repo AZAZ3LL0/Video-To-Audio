@@ -16,21 +16,39 @@ def send_welcome(message):
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     yt = YouTube(message.text)
-    print(yt.title)
+    vidos = yt.title.replace('.', '')
+    print(vidos)
     yt.streams.filter(file_extension='mp4')[0].download()
-    video = VideoFileClip(yt.title + ".mp4")
-    video.audio.write_audiofile(yt.title + ".mp3")
+    video = VideoFileClip(vidos + ".mp4")
+    video.audio.write_audiofile(vidos + ".mp3")
 
-    audio = open(yt.title + ".mp3", 'rb')
+    audio = open(vidos + ".mp3", 'rb')
     # yield bot.send_audio(message.chat.id, audio)
     bot.send_audio(message.chat.id, audio)
 
     video.close()
     audio.close()
-    os.remove(yt.title + ".mp4")
-    os.remove(yt.title + ".mp3")
+    os.remove(vidos + ".mp4")
+    os.remove(vidos + ".mp3")
     #except BaseException:
     #    bot.reply_to(message, "Еблан? Ссылку гони сучара")
 
+@bot.message_handler(commands=['download'])
+def sent_group_audio(message):
+    yt = YouTube(message.text.split(' ')[-1])
+    vidos = yt.title.replace('.', '')
+    print(vidos)
+    yt.streams.filter(file_extension='mp4')[0].download()
+    video = VideoFileClip(vidos + ".mp4")
+    video.audio.write_audiofile(vidos + ".mp3")
+
+    audio = open(vidos + ".mp3", 'rb')
+    # yield bot.send_audio(message.chat.id, audio)
+    bot.send_audio(message.chat.id, audio)
+
+    video.close()
+    audio.close()
+    os.remove(vidos + ".mp4")
+    os.remove(vidos + ".mp3")
 
 bot.infinity_polling(interval=0, timeout=5 * 60)
