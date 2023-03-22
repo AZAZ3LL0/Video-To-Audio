@@ -26,12 +26,20 @@ def main():
         yt = YouTube(request)
         normal_name = "".join(char for char in yt.title if char.isalnum())
         print(normal_name)
-        yt.streams.filter(file_extension='mp4')[0].download(filename=normal_name+".mp4")
-        video = VideoFileClip(normal_name + ".mp4")
-        video.audio.write_audiofile(path + normal_name + ".mp3")
 
-        video.close()
-        os.remove(normal_name + ".mp4")
+        try:
+            yt.streams.filter(file_extension='mp4')[0].download(filename=normal_name + ".mp4")
+
+        except KeyError:
+            print('this video cant be converted')
+        finally:
+            try:
+                video = VideoFileClip(normal_name + ".mp4")
+                video.audio.write_audiofile(path + normal_name + ".mp3")
+                video.close()
+                os.remove(normal_name + ".mp4")
+            except OSError:
+                pass
 
         if args.stream is None:
             break
