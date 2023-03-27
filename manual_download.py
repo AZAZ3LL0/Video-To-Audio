@@ -8,6 +8,7 @@ from tools import titles
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", required=False)
 parser.add_argument("-s", "--stream", required=False)
+parser.add_argument("-f", "--fullcontrol", required=False)
 args = parser.parse_args()
 
 print(titles.intro2)
@@ -28,7 +29,12 @@ def main():
         print(normal_name)
 
         try:
-            yt.streams.filter(file_extension='mp4')[0].download(filename=normal_name + ".mp4")
+            streams = yt.streams.filter(file_extension='mp4')
+            if args.fullcontrol is not None:
+                [print(i) for i in streams]
+                streams[int(input("\nВведите индекс стрима:\t"))].download(filename=normal_name + ".mp4")
+            else:
+                streams[0].download(filename=normal_name + ".mp4")
 
         except KeyError:
             print('this video cant be converted')
